@@ -6,8 +6,9 @@
   - To connect with API use login/password of the personal account (you can also add an additional password (use with the main login) in the personal account - Settings - API)
   - There is a limit of API connections - 1200/hour
 - At Zabbix server
-  - copy *.py scripts to /usr/lib/zabbix/externalscripts
-  - import template *.xml into Zabbix
+  - Install Python3
+  - Copy *.py scripts to /usr/lib/zabbix/externalscripts
+  - Import template *.xml into Zabbix
   - Create host "REG.RU___<reg.ru_account_login>"
   - Add macros in the host:
     - {$REGRU_USER} - reg.ru account login,
