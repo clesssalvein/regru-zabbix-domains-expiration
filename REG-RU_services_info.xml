@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2022-06-19T07:13:25Z</date>
+    <groups>
+        <group>
+            <name>Hosters</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>REG-RU_services_info</template>
+            <name>REG-RU_services_info</name>
+            <groups>
+                <group>
+                    <name>Hosters</name>
+                </group>
+            </groups>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Список услуг</name>
+                    <type>EXTERNAL</type>
+                    <key>ALEF_reg-ru_getServicesList.py[&quot;{$REGRU_USER}&quot;,&quot;{$REGRU_PASS}&quot;]</key>
+                    <delay>1d</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Домен: {#DOMAINNAME}, Тип услуги: {#SERVICETYPE}, ID Услуги: {#SERVICEID}. Время до окончания действия услуги</name>
+                            <type>EXTERNAL</type>
+                            <key>ALEF_reg-ru_getServiceTimeLeft.py[&quot;{$REGRU_USER}&quot;,&quot;{$REGRU_PASS}&quot;,&quot;{#SERVICEID}&quot;]</key>
+                            <delay>1d</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>s</units>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&lt;2678400</expression>
+                                    <name>Домен: {#DOMAINNAME}, Тип услуги: {#SERVICETYPE}, ID Услуги: {#SERVICEID}. Заканчивается время действия услуги. Проверьте аккаунт REG.RU *{$REGRU_USER}*</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{nodata(31d)}=1</expression>
+                                    <name>Домен: {#DOMAINNAME}, Тип услуги: {#SERVICETYPE}, ID Услуги: {#SERVICEID}. Нет данных от мониторинга</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>
